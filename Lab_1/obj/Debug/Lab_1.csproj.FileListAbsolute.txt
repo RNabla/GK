@@ -1,0 +1,14 @@
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\bin\Debug\Lab_1.exe.config
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\bin\Debug\Lab_1.exe
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\bin\Debug\Lab_1.pdb
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\Lab_1.csprojResolveAssemblyReference.cache
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\MainWindow.g.cs
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\App.g.cs
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\Lab_1_MarkupCompile.cache
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\Lab_1_MarkupCompile.lref
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\MainWindow.baml
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\Lab_1.g.resources
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\Lab_1.Properties.Resources.resources
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\Lab_1.csproj.GenerateResource.Cache
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\Lab_1.exe
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\Lab_1.pdb
