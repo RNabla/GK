@@ -5,6 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab_1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid></Grid>
+        Title="MainWindow" Height="720" Width="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="80"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Canvas Name="SketchCanvas">
+            <Image Name="SketchBitmap"></Image>
+        </Canvas>
+        <WrapPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <Button Click="ToggleDrawingPolygon" Name="DrawPolygonButton">Draw polygon</Button>
+            <Button Click="ToggleDrawingCircle" Name="DrawCircleButton">Draw circle</Button>
+            <Button Click="FinishDrawing"  Name="FinishDrawingButton">Finish drawing</Button>
+            <Button Click="CancelDrawing"  Name="CancelDrawingButton">Cancel drawing</Button>
+
+        </WrapPanel>
+        <ListBox Grid.Row="0" Grid.Column="1">
+            
+        </ListBox>
+       
+    </Grid>
 </Window>

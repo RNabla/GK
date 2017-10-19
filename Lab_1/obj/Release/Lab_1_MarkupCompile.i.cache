@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Debug\
+C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\obj\Release\
 Lab_1
 none
 false
-DEBUG;TRACE
+TRACE
 C:\Users\Izomorfizom\Source\Repos\GK\Lab_1\App.xaml
 11151548125
 
-101961122719
+10-1443362062
 14-1787462521
 MainWindow.xaml;
 
-False
+True
 
