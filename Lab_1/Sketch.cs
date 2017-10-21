@@ -50,6 +50,9 @@ namespace Lab_1
 
         private void DrawPreview(object sender, MouseEventArgs mouseEventArgs)
         {
+            var rgb = new byte[3];
+            _rand.NextBytes(rgb);
+            var color = Color.FromRgb(rgb[0], rgb[1], rgb[2]);
             switch (Drawing)
             {
                 case Drawing.Circle:
@@ -58,17 +61,15 @@ namespace Lab_1
                         RepaintAll();
                         var p1 = _points[0];
                         var dist = Distance(p1, mouseEventArgs.GetPosition(_canvas));
-                        DrawCircle((int) p1.X, (int) p1.Y, dist, Color.FromRgb(0xd3, 0xd3, 0xd3));
+                        DrawCircle((int) p1.X, (int) p1.Y, dist, color);
                     }
                     break;
                 case Drawing.Polygon:
                     if (_points.Count > 0)
                     {
-                        var color = Color.FromRgb(0xd3, 0xd3, 0xd3);
                         RepaintAll();
                         for (var i = 0; i < _points.Count - 1; i++)
                             DrawLine(_points[i], _points[i + 1], color);
-
                         var p1 = _points.Last();
                         var p2 = mouseEventArgs.GetPosition(_canvas);
                         DrawLine((int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y, color);
@@ -125,7 +126,7 @@ namespace Lab_1
         public void DrawLine(int x1, int y1, int x2, int y2, Color color)
         {
             _bitmap.Lock();
-            if (x2 + y2 < x1 + y1) // punkty leżące poniżej prostej y = -x + B + A, gdzie A = x1, B = y1
+            if (x2 + y2 < x1 + y1) 
             {
                 Swap(ref x1, ref x2);
                 Swap(ref y1, ref y2);
@@ -300,20 +301,6 @@ namespace Lab_1
                 color.R, color.G, color.B
             };
             _bitmap.WritePixels(rect, pixels, pixels.Length, 0);
-        }
-
-        public void DrawPolygonClick(object sender, MouseButtonEventArgs e)
-        {
-            _click ^= true;
-            if (_click)
-            {
-                _start = e.GetPosition(_canvas);
-            }
-            else
-            {
-                var pos = e.GetPosition(_canvas);
-                DrawLine((int) _start.X, (int) _start.Y, (int) pos.X, (int) pos.Y, Color.FromRgb(255, 0, 0));
-            }
         }
 
         public void ClickHandler(object sender, MouseEventArgs e)
