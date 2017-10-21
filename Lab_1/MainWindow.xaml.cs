@@ -26,9 +26,22 @@ namespace Lab_1
         {
             InitializeComponent();
             _sketch = new Sketch(SketchCanvas, SketchBitmap);
-            _sketch.DrawCircle(500, 500, 20, Color.FromRgb(255, 0, 0));
+            _sketch.DrawCircle(500, 500, 250, Color.FromRgb(255, 0, 0),30);
             _sketch.DrawLine(300, 300, 400, 350, Color.FromRgb(0, 255, 255));
             _sketch.DrawLine(300, 300, 400, 250, Color.FromRgb(0, 000, 255));
+            _sketch.OnDrawingFinished += (sender, args) =>
+            {
+                ToggleButtons(true);
+            };
+            _sketch.OnFinishAvailable += (sender, args) =>
+            {
+                ToggleButtons(false);
+                ToggleFinishButton(true);
+            };
+            _sketch.OnDrawingCanceled += (sender, args) =>
+            {
+                ToggleButtons(true);
+            };
             var rand = new Random(0x00C0FFEE);
             KeyDown += _sketch.KeyHitHandler;
             ToggleButtons(true);
@@ -38,6 +51,7 @@ namespace Lab_1
         {
             _sketch.Drawing = Drawing.Polygon;
             ToggleButtons(false);
+            ToggleFinishButton(false);
 
         }
 
@@ -45,18 +59,17 @@ namespace Lab_1
         {
             _sketch.Drawing = Drawing.Circle;
             ToggleButtons(false);
+            ToggleFinishButton(false);
         }
 
         private void FinishDrawing(object sender, RoutedEventArgs e)
         {
             _sketch.FinishDrawing();
-            ToggleButtons(true);
         }
 
         private void CancelDrawing(object sender, RoutedEventArgs e)
         {
-            _sketch.FinishDrawing();
-            ToggleButtons(true);
+            _sketch.CancelDrawing();
         }
 
         public void ToggleDrawingButtons(bool isEnabled)
@@ -69,6 +82,10 @@ namespace Lab_1
         {
             FinishDrawingButton.IsEnabled = isEnabled;
             CancelDrawingButton.IsEnabled = isEnabled;
+        }
+        public void ToggleFinishButton(bool isEnabled)
+        {
+            FinishDrawingButton.IsEnabled = isEnabled;
         }
         public void ToggleButtons(bool drawingEnabled)
         {
