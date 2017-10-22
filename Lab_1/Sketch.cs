@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace Lab_1
 {
@@ -19,15 +21,16 @@ namespace Lab_1
         private const int DpiY = 96;
         private readonly WriteableBitmap _bitmap;
         private readonly Canvas _canvas;
+        private readonly byte[] _clearBuffer = new byte[Height * Width * 3];
+        private readonly byte[] _currentContent = new byte[Height * Width * 3];
         private readonly Int32Rect _fullSize = new Int32Rect(0, 0, Width, Height);
-        private readonly List<MyShape> _myShapes = new List<MyShape>();
+        public readonly ObservableCollection<MyShape> _myShapes = new ObservableCollection<MyShape>();
         private readonly List<Point> _points = new List<Point>();
         private readonly Random _rand = new Random();
-        private readonly byte[] _clearBuffer = new byte[Height * Width * 3];
         private bool _click;
-        private readonly byte[] _currentContent = new byte[Height * Width * 3];
         private bool _isUpdated;
         private Point _start;
+        private HashSet<Shape> _guiElements = new HashSet<Shape>();
 
 
         public Sketch(Canvas canvasContext, Image imageContext)
@@ -69,10 +72,10 @@ namespace Lab_1
                     {
                         RepaintAll();
                         for (var i = 0; i < _points.Count - 1; i++)
-                            DrawLine(_points[i], _points[i + 1], color);
+                            DrawLine(_points[i], _points[i + 1], color,1);
                         var p1 = _points.Last();
                         var p2 = mouseEventArgs.GetPosition(_canvas);
-                        DrawLine((int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y, color);
+                        DrawLine((int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y, color,1);
                     }
                     break;
             }
@@ -117,24 +120,24 @@ namespace Lab_1
             _bitmap.Unlock();
         }
 
-        public void DrawLine(Point p1, Point p2, Color color)
+        public void DrawLine(Point p1, Point p2, Color color, int thickness)
         {
             DrawLine((int) p1.X, (int) p1.Y,
-                (int) p2.X, (int) p2.Y, color);
+                (int) p2.X, (int) p2.Y, color, thickness);
         }
 
-        public void DrawLine(int x1, int y1, int x2, int y2, Color color)
+        public void DrawLine(int x1, int y1, int x2, int y2, Color color, int thickness)
         {
             _bitmap.Lock();
-            if (x2 + y2 < x1 + y1) 
+            if (x2 + y2 < x1 + y1)
             {
                 Swap(ref x1, ref x2);
                 Swap(ref y1, ref y2);
             }
             if (x2 - x1 >= y2 - y1)
-                DrawLineFromMinus45To45(x1, y1, x2, y2, color);
+                DrawLineFromMinus45To45(x1, y1, x2, y2, color, thickness);
             else
-                DrawLineFrom45To135(x1, y1, x2, y2, color);
+                DrawLineFrom45To135(x1, y1, x2, y2, color, thickness);
             _bitmap.Unlock();
         }
 
@@ -145,7 +148,7 @@ namespace Lab_1
             b = aux;
         }
 
-        private void DrawLineFrom45To135(int x1, int y1, int x2, int y2, Color color)
+        private void DrawLineFrom45To135(int x1, int y1, int x2, int y2, Color color, int thickness)
         {
             var dx = x2 - x1;
             var dy = y2 - y1;
@@ -161,8 +164,8 @@ namespace Lab_1
             var yf = y1;
             var xb = x2;
             var yb = y2;
-            DrawPixel(xf, yf, color);
-            DrawPixel(xb, yb, color);
+            DrawPixel(xf, yf, color, thickness);
+            DrawPixel(xb, yb, color, thickness);
 
             while (yf < yb)
             {
@@ -186,13 +189,13 @@ namespace Lab_1
                         xb++;
                     }
                 }
-                DrawPixel(xf, yf, color);
+                DrawPixel(xf, yf, color, thickness);
                 if (yf != yb)
-                    DrawPixel(xb, yb, color);
+                    DrawPixel(xb, yb, color, thickness);
             }
         }
 
-        private void DrawLineFromMinus45To45(int x1, int y1, int x2, int y2, Color color)
+        private void DrawLineFromMinus45To45(int x1, int y1, int x2, int y2, Color color, int thickness)
         {
             var dx = x2 - x1;
             var dy = y2 - y1;
@@ -208,8 +211,8 @@ namespace Lab_1
             var yf = y1;
             var xb = x2;
             var yb = y2;
-            DrawPixel(xf, yf, color);
-            DrawPixel(xb, yb, color);
+            DrawPixel(xf, yf, color,thickness);
+            DrawPixel(xb, yb, color, thickness);
 
             while (xf < xb)
             {
@@ -233,22 +236,13 @@ namespace Lab_1
                         yb++;
                     }
                 }
-                DrawPixel(xf, yf, color);
+                DrawPixel(xf, yf, color, thickness);
                 if (xf != xb)
-                    DrawPixel(xb, yb, color);
+                    DrawPixel(xb, yb, color, thickness);
             }
         }
 
-        public void DrawCircle(int x, int y, int radius, Color color, int thickness)
-        {
-            var middle = thickness / 2;
-            var bot = Math.Max(0, radius - middle);
-            var top = radius + middle;
-            for (var i = bot; i <= top; i++)
-                DrawCircle(x, y, i, color);
-        }
-
-        private void DrawCircle(int x, int y, int radius, Color color)
+        public void DrawCircle(int x, int y, int radius, Color color)
         {
             _bitmap.Lock();
             var deltaE = 3;
@@ -279,19 +273,24 @@ namespace Lab_1
 
         private void DrawSymmetricalAround(int x, int y, int dx, int dy, Color color)
         {
-            DrawPixel(x + dx, y + dy, color);
-            DrawPixel(x - dx, y + dy, color);
-            DrawPixel(x + dx, y - dy, color);
-            DrawPixel(x - dx, y - dy, color);
+            DrawPixel(x + dx, y + dy, color,1);
+            DrawPixel(x - dx, y + dy, color,1);
+            DrawPixel(x + dx, y - dy, color,1);
+            DrawPixel(x - dx, y - dy, color,1);
 
-            DrawPixel(x + dy, y + dx, color);
-            DrawPixel(x - dy, y + dx, color);
-            DrawPixel(x + dy, y - dx, color);
-            DrawPixel(x - dy, y - dx, color);
+            DrawPixel(x + dy, y + dx, color,1);
+            DrawPixel(x - dy, y + dx, color,1);
+            DrawPixel(x + dy, y - dx, color,1);
+            DrawPixel(x - dy, y - dx, color,1);
         }
 
-        private void DrawPixel(int x, int y, Color color)
+        private void DrawPixel(int x, int y, Color color, int thickness)
         {
+            if (thickness > 1)
+            {
+                DrawPixel2(x,y,color,thickness);
+                return;
+            }
             if (!(0 <= x && x < Width && 0 <= y && y < Height))
                 return;
             var rect = new Int32Rect(x, y, 1, 1);
@@ -301,6 +300,48 @@ namespace Lab_1
                 color.R, color.G, color.B
             };
             _bitmap.WritePixels(rect, pixels, pixels.Length, 0);
+        }
+
+        private void DrawPixel2(int xCenter, int yCenter, Color color, int thickness)
+        {
+            //int half = thickness / 2;
+            //for (var x = xCenter - half; x <= xCenter + half; x++)
+            //{
+            //    for (var y = yCenter - half; y <= yCenter + half; y++)
+            //    {
+            //        if (!(0 <= x && x < Width && 0 <= y && y < Height))
+            //            continue;
+            //        var rect = new Int32Rect(x, y, 1, 1);
+            //        var pixels = new[]
+            //        {
+            //            color.R, color.G, color.B
+            //        };
+            //        _bitmap.WritePixels(rect, pixels, pixels.Length, 0);
+            //    }
+            //}
+            int half = thickness / 2;
+            for (var x = xCenter - half; x <= xCenter + half; x++)
+            {
+                if (!(0 <= x && x < Width && 0 <= yCenter && yCenter < Height))
+                    continue;
+                var rect = new Int32Rect(x, yCenter, 1, 1);
+                var pixels = new[]
+                {
+                    color.R, color.G, color.B
+                };
+                _bitmap.WritePixels(rect, pixels, pixels.Length, 0);
+            }
+            for (var y = yCenter - half; y <= yCenter + half; y++)
+            {
+                if (!(0 <= xCenter && xCenter < Width && 0 <= yCenter && yCenter < Height))
+                    continue;
+                var rect = new Int32Rect(xCenter, yCenter, 1, 1);
+                var pixels = new[]
+                {
+                    color.R, color.G, color.B
+                };
+                _bitmap.WritePixels(rect, pixels, pixels.Length, 0);
+            }
         }
 
         public void ClickHandler(object sender, MouseEventArgs e)
@@ -321,45 +362,82 @@ namespace Lab_1
                     {
                         var p1 = _points[_points.Count - 2];
                         var p2 = _points[_points.Count - 1];
-                        DrawLine((int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y, Color.FromRgb(255, 255, 255));
+                        DrawLine((int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y, Color.FromRgb(255, 255, 255),1);
                     }
                     if (_points.Count == 3)
-                    {
                         OnFinishAvailable?.Invoke(null, EventArgs.Empty);
-                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        public void KeyHitHandler(object sender, KeyEventArgs e)
+   
+        public void AddGuiToCanvas(Shape shape)
         {
-            return;
-            if (e.Key == Key.Z && Drawing == Drawing.Polygon)
-            {
-                if (_points.Count > 1)
-                    _points.RemoveAt(_points.Count - 1);
+            if (_guiElements.Contains(shape))
                 return;
-            }
-            if (e.Key == Key.Enter)
-            {
-            }
+            _guiElements.Add(shape);
+            _canvas.Children.Add(shape);
         }
 
+        public void DeleteShapeFromCanvas(MyShape myShape)
+        {
+            if (myShape == null)
+                return;
+            foreach (var uiElement in myShape.GetUiElements())
+                DeleteUiElementFromCanvas(uiElement);
+            _myShapes.Remove(myShape);
+        }
+
+        public void DeleteUiElementFromCanvas(Shape uiElement)
+        {
+            _guiElements.Remove(uiElement);
+            _canvas.Children.Remove(uiElement);
+        }
+      
         public void FinishDrawing()
         {
             var rgb = new byte[3];
             _rand.NextBytes(rgb);
-            var color= Color.FromRgb(rgb[0], rgb[1], rgb[2]);
+            var color = Color.FromRgb(rgb[0], rgb[1], rgb[2]);
             if (Drawing.Polygon == Drawing)
             {
                 if (_points.Count > 2)
                 {
                     var p1 = _points[_points.Count - 1];
                     var p2 = _points[0];
-                    DrawLine((int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y, color);
-                    var poly = new MyPolygon(_points,color,1);
+                    DrawLine((int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y, color,1);
+                    var poly = new MyPolygon(_points,_canvas, color);
+                    poly.ShapeChanged += (o, args) =>
+                    {
+                        _isUpdated = false;
+                        RepaintAll();
+                    };
+                    poly.ShapeDeleted += (o, args) =>
+                    {
+                        _isUpdated = false;
+                        DeleteShapeFromCanvas(o as MyShape);
+                        RepaintAll();
+                    };
+                    poly.ComponentDeleted += (o, args) =>
+                    {
+                        _isUpdated = false;
+                        DeleteUiElementFromCanvas(o as Shape);
+                        RepaintAll();
+                    };
+                    poly.ComponentAdded += (o, args) =>
+                    {
+                        _isUpdated = false;
+                        AddGuiToCanvas(o as Shape);
+                        RepaintAll();
+
+                    };
+                    poly.ColorChanged += (o, args) =>
+                    {
+                        _isUpdated = false;
+                        RepaintAll();
+                    };
                     _myShapes.Add(poly);
                     _isUpdated = false;
                 }
@@ -370,8 +448,23 @@ namespace Lab_1
                 {
                     var p1 = _points[0];
                     var p2 = _points[1];
-                    var circle = new MyCircle((int) p1.X, (int) p1.Y, Distance(p1, p2),
-                        color);
+                    var circle = new MyCircle((int) p1.X, (int) p1.Y, Distance(p1, p2), _canvas, color);
+                    circle.ShapeChanged += (o, args) =>
+                    {
+                        _isUpdated = false;
+                        RepaintAll();
+                    };
+                    circle.ShapeDeleted += (o, args) =>
+                    {
+                        _isUpdated = false;
+                        DeleteShapeFromCanvas(o as MyShape);
+                        RepaintAll();
+                    };
+                    circle.ColorChanged += (o, args) =>
+                    {
+                        _isUpdated = false;
+                        RepaintAll();
+                    };
                     _myShapes.Add(circle);
                     _isUpdated = false;
                 }

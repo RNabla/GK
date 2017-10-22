@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab_1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
+        Title="MainWindow" Height="720" Width="1380">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="80"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Canvas Name="SketchCanvas">
             <Image Name="SketchBitmap"></Image>
@@ -25,8 +25,8 @@
             <Button Click="CancelDrawing"  Name="CancelDrawingButton">Cancel drawing</Button>
 
         </WrapPanel>
-        <ListBox Grid.Row="0" Grid.Column="1">
-            
+        <ListBox Name="Shapes" Grid.Row="0" Grid.Column="1">
+            <ListBox.SelectionMode>Single</ListBox.SelectionMode>
         </ListBox>
        
     </Grid>

@@ -26,9 +26,24 @@ namespace Lab_1
         {
             InitializeComponent();
             _sketch = new Sketch(SketchCanvas, SketchBitmap);
-            _sketch.DrawCircle(500, 500, 250, Color.FromRgb(255, 0, 0),30);
-            _sketch.DrawLine(300, 300, 400, 350, Color.FromRgb(0, 255, 255));
-            _sketch.DrawLine(300, 300, 400, 250, Color.FromRgb(0, 000, 255));
+            Shapes.ItemsSource = _sketch._myShapes;
+            Shapes.ContextMenu = new ContextMenu();
+            var item = new MenuItem
+            {
+                Header = "Set Color"
+            };
+            item.Click += (obj, args) =>
+            {
+                var si = Shapes.SelectedItem;
+                if (si is MyShape myShape)
+                {
+                    new ColorPrompt(myShape).ShowDialog();
+                    myShape.ColorChangedEvent();
+                }
+            };
+            
+            Shapes.ContextMenu.Items.Add(item);
+            
             _sketch.OnDrawingFinished += (sender, args) =>
             {
                 ToggleButtons(true);
@@ -42,8 +57,8 @@ namespace Lab_1
             {
                 ToggleButtons(true);
             };
+            
             var rand = new Random(0x00C0FFEE);
-            KeyDown += _sketch.KeyHitHandler;
             ToggleButtons(true);
         }
 
