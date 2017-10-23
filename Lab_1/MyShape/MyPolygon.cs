@@ -12,9 +12,10 @@ namespace Lab_1
         private readonly Canvas _canvas;
         public readonly List<Edge> _edges = new List<Edge>();
         public readonly List<Vertex> _vertices = new List<Vertex>();
-
+        private static int _id = 1;
         public MyPolygon(List<Point> points, Canvas canvas, Color color) : base(color)
         {
+            Name = $"Polygon {_id++}";
             _canvas = canvas;
             var n = points.Count;
             for (var i = 0; i < n; i++)
@@ -68,9 +69,13 @@ namespace Lab_1
             var edge1 = new Edge(e.Vertex1, newVertex, this);
             var edge2 = new Edge(newVertex, e.Vertex2, this);
             edge1.PreviousEdge = e.PreviousEdge;
+            
             edge1.NextEdge = edge2;
             edge2.PreviousEdge = edge1;
             edge2.NextEdge = e.NextEdge;
+
+            //e.PreviousEdge.Vertex2 = newVertex;
+            //e.NextEdge.Vertex1 = newVertex;
 
             edge1.NewVertex += NewVertexHandler;
             edge2.NewVertex += NewVertexHandler;
@@ -80,6 +85,9 @@ namespace Lab_1
             newVertex.Edge1 = edge1;
             newVertex.Edge2 = edge2;
 
+
+            e.Vertex1.Edge2 = edge1;
+            e.Vertex2.Edge1 = edge2;
 
             _vertices.Add(newVertex);
             _edges.Add(edge1);
@@ -159,7 +167,7 @@ namespace Lab_1
 
         public override string ToString()
         {
-            return $"Polygon: @{Center}";
+            return Name;
         }
 
         public override event ShapeChangedHandler ShapeChanged;

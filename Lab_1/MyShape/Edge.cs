@@ -12,6 +12,11 @@ namespace Lab_1
         public Vertex Vertex2;
         public Edge PreviousEdge;
         public Edge NextEdge;
+
+
+
+
+
         public Line Line;
         public int Thickness;
         private MyShape _myShape;
@@ -78,8 +83,39 @@ namespace Lab_1
                 thicknessMenu.Items.Add(thickness5);
                 thicknessMenu.Items.Add(thickness7);
 
+                //var setLengthMenu = new MenuItem()
+                //{
+                //    Header = "Ustaw d³ugoœæ"
+                //};
+                //setLengthMenu.Click += (obj,args) =>
+                //{
+                //    var x1 = Vertex1.VertexPoint.X;
+                //    var x2 = Vertex2.VertexPoint.X;
+                //    var y1 = Vertex1.VertexPoint.Y;
+                //    var y2 = Vertex2.VertexPoint.Y;
 
+
+                //    var midX = (x1+x2) / 2;
+                //    var midY = (y1+y2) / 2;
+
+                //    var length = 300; // prompted
+                //    var midPoint = new Point(midX,midY);
+
+                //    var rightVect = new Vector(midX-x1,midY-y1);
+                //    rightVect.Normalize();
+                //    rightVect *= length/2;
+
+                //    var leftVect = new Vector(midX-x2,midY-y2);
+                //    leftVect.Normalize();
+                //    leftVect *= length/2;
+
+                //    Vertex1.VertexPoint = Point.Add(midPoint, rightVect);
+                //    Vertex2.VertexPoint = Point.Add(midPoint, leftVect);
+                //    LineChanged?.Invoke(this, null);
+
+                //};
                 Line.ContextMenu.Items.Add(thicknessMenu);
+               // Line.ContextMenu.Items.Add(setLengthMenu);
                 //Line.ContextMenu.Items.Add(item);
 
                

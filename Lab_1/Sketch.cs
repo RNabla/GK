@@ -335,7 +335,7 @@ namespace Lab_1
             {
                 if (!(0 <= xCenter && xCenter < Width && 0 <= yCenter && yCenter < Height))
                     continue;
-                var rect = new Int32Rect(xCenter, yCenter, 1, 1);
+                var rect = new Int32Rect(xCenter, y, 1, 1);
                 var pixels = new[]
                 {
                     color.R, color.G, color.B

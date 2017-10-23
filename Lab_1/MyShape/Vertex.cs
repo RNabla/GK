@@ -12,6 +12,14 @@ namespace Lab_1
         public Point VertexPoint;
         public Edge Edge1;
         public Edge Edge2;
+
+
+
+
+
+
+
+
         public Ellipse Ellipse = null;
         private bool _isHeld = false;
         private Canvas _canvas;

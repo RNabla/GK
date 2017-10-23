@@ -8,6 +8,7 @@ namespace Lab_1
 {
     internal abstract class MyShape
     {
+        public string Name;
         public Vertex Center;
         public Color Color;
         public abstract void Draw(Sketch sketch);
