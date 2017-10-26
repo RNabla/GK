@@ -38,7 +38,7 @@ namespace Lab_1
             _canvas = canvasContext;
             _bitmap = new WriteableBitmap(Width, Height, DpiX, DpiY, PixelFormats.Rgb24, null);
             imageContext.Source = _bitmap;
-            _canvas.MouseDown += ClickHandler;
+            _canvas.MouseDown += ClickHandler; 
             _canvas.MouseDown += TestHandler;
             _canvas.MouseMove += DrawPreview;
             imageContext.MouseDown += TestHandler;
@@ -57,7 +57,7 @@ namespace Lab_1
             _rand.NextBytes(rgb);
             var color = Color.FromRgb(rgb[0], rgb[1], rgb[2]);
             switch (Drawing)
-            {
+            {   
                 case Drawing.Circle:
                     if (_points.Count == 1)
                     {
@@ -74,7 +74,7 @@ namespace Lab_1
                         for (var i = 0; i < _points.Count - 1; i++)
                             DrawLine(_points[i], _points[i + 1], color,1);
                         var p1 = _points.Last();
-                        var p2 = mouseEventArgs.GetPosition(_canvas);
+                        var p2 = mouseEventArgs.GetPosition(_canvas);  
                         DrawLine((int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y, color,1);
                     }
                     break;
@@ -448,7 +448,7 @@ namespace Lab_1
                 {
                     var p1 = _points[0];
                     var p2 = _points[1];
-                    var circle = new MyCircle((int) p1.X, (int) p1.Y, Distance(p1, p2), _canvas, color);
+                    var circle = new MyCircle((int) p1.X, (int) p1.Y, Distance(p1, p2),this, _canvas, color);
                     circle.ShapeChanged += (o, args) =>
                     {
                         _isUpdated = false;
@@ -480,6 +480,11 @@ namespace Lab_1
             UpdateCurrentContent();
             OnDrawingCanceled?.Invoke(null, EventArgs.Empty);
             Drawing = Drawing.None;
+        }
+
+        public IEnumerable<MyCircle> GetConcentricOptions(MyCircle myCircle)
+        {
+            return _myShapes.OfType<MyCircle>().Where(circle => circle != myCircle);
         }
     }
 

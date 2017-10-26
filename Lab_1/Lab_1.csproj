@@ -58,6 +58,9 @@
     <Compile Include="ColorPrompt.xaml.cs">
       <DependentUpon>ColorPrompt.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConcentricPrompt.xaml.cs">
+      <DependentUpon>ConcentricPrompt.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyShape\Edge.cs" />
     <Compile Include="MyShape\MyCircle.cs" />
     <Compile Include="MyShape\MyPolygon.cs" />
@@ -68,6 +71,10 @@
     </Compile>
     <Compile Include="Sketch.cs" />
     <Page Include="ColorPrompt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConcentricPrompt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

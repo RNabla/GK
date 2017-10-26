@@ -68,6 +68,10 @@ namespace Lab_1
                         {
                             VertexPoint.X = X;
                             VertexPoint.Y = Y;
+                            if (_myShape is MyCircle circle)
+                            {
+                                circle.SetNewPositionForConcentric(new Point(X, Y));
+                            }
                             /* Updating center*/
                             if (!_isCenter)
                             {
@@ -104,13 +108,12 @@ namespace Lab_1
                 if (_isCenter && myCircle != null)
                 {
                     Ellipse.ContextMenu = new ContextMenu();
-                    var item1 = new MenuItem()
+                    var item1 = new MenuItem
                     {
                         Header = "Ustaw promień"
                     };
                     item1.Click += (obj, args) =>
                     {
-                        // MessageBox.Show("podaj promien");
                         var result = new RadiusPrompt(myCircle).ShowDialog();
                         if (result.HasValue && result.Value)
                         {
@@ -118,7 +121,34 @@ namespace Lab_1
                         }
 
                     };
+                    var item2 = new MenuItem
+                    {
+                        Header = "Ustaw koncentryczność"
+                    };
+                    item2.Click += (sender, args) =>
+                    {
+                        var circles = myCircle.GetOtherCircles();
+                        var window = new ConcentricPrompt(circles);
+                        var result = window.ShowDialog();
+                        if (result.HasValue && result.Value)
+                        {
+                            if (window.Selected is MyCircle selectedCircle)
+                            {
+                                myCircle.Center.VertexPoint = selectedCircle.Center.VertexPoint;
+                                MyCircle.BoundConcentric(myCircle, selectedCircle, selectedCircle.Center.VertexPoint);
+                                myCircle.ColorChangedEvent();
+                            }
+                            else
+                            {
+                                // TODO: usun z listy
+                                MyCircle.DisboundConcentric(myCircle);
+                            }
+                        }
+
+                    };
+
                     Ellipse.ContextMenu.Items.Add(item1);
+                    Ellipse.ContextMenu.Items.Add(item2);
                 }
 
             }
