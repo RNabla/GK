@@ -51,13 +51,12 @@ namespace Lab_1
 
         private void DefaultShapeChangedHandler(object sender, RoutedEventArgs args)
         {
-            //MessageBox.Show("changed");
             ShapeChanged?.Invoke(this, null);
         }
         public void NewVertexHandler(object sender, RoutedEventArgs args)
         {
             var e = sender as Edge;
-
+            e.Restriction = Restriction.None;
 
             var dx = (e.Vertex1.VertexPoint.X + e.Vertex2.VertexPoint.X) / 2;
             var dy = (e.Vertex1.VertexPoint.Y + e.Vertex2.VertexPoint.Y) / 2;
@@ -79,8 +78,8 @@ namespace Lab_1
 
             edge1.NewVertex += NewVertexHandler;
             edge2.NewVertex += NewVertexHandler;
-            edge1.NewVertex += DefaultShapeChangedHandler;
-            edge2.NewVertex += DefaultShapeChangedHandler;
+            edge1.LineChanged += DefaultShapeChangedHandler;
+            edge2.LineChanged += DefaultShapeChangedHandler;
 
             newVertex.Edge1 = edge1;
             newVertex.Edge2 = edge2;
@@ -111,6 +110,8 @@ namespace Lab_1
                 if (_vertices.Count == 3 || v.Equals(Center))
                 {
                     ShapeDeleted?.Invoke(this, null);
+                    foreach (var edge in _edges)
+                        edge.TextBlock.Text = "";
                     return;
                 }
                 var newEdge = new Edge(v.Edge1.Vertex1, v.Edge2.Vertex2, this)
@@ -129,6 +130,7 @@ namespace Lab_1
                 Center.VertexPoint.Y = sumY / _vertices.Count;
 
 
+                v.Edge1.Restriction = v.Edge2.Restriction = Restriction.None;
                 _edges.Remove(v.Edge1);
                 _edges.Remove(v.Edge2);
                 _edges.Add(newEdge);
@@ -152,8 +154,17 @@ namespace Lab_1
                 var shapeUi = vertice.GetUiElement(_canvas);
                 sketch.AddGuiToCanvas(shapeUi);
             }
+            RecalculateCenter();
             var centerUi = Center.GetUiElement(_canvas);
             sketch.AddGuiToCanvas(centerUi);
+        }
+
+        private void RecalculateCenter()
+        {
+            var x = _vertices.Average(vertex => vertex.VertexPoint.X);
+            var y = _vertices.Average(vertex => vertex.VertexPoint.Y);
+            Center.VertexPoint.X = x;
+            Center.VertexPoint.Y = y;
         }
 
         public override IEnumerable<Shape> GetUiElements()

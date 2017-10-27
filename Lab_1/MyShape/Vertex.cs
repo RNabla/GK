@@ -13,7 +13,7 @@ namespace Lab_1
         public Edge Edge1;
         public Edge Edge2;
 
-
+        
 
 
 
@@ -52,7 +52,7 @@ namespace Lab_1
                     Height = 12,
                     Width = 12,
                     Stroke = _isCenter ? Brushes.Red : Brushes.White ,
-                    Fill = Brushes.White,
+                    Fill = _isCenter ? Brushes.Red : Brushes.White,
                     Visibility = Visibility.Visible
                 };
                 Panel.SetZIndex(Ellipse, 5);
@@ -60,26 +60,61 @@ namespace Lab_1
                 {
                     if (args.LeftButton == MouseButtonState.Pressed)
                     {
-                        var X = args.GetPosition(canvas).X;
-                        var Y = args.GetPosition(canvas).Y;
-                        var dx = X - VertexPoint.X;
-                        var dy = Y - VertexPoint.Y;
-                        if (Math.Abs(dx * dx + dy * dy) >= 2)
+                        var point = args.GetPosition(canvas);
+                        var x = point.X;
+                        var y = point.Y;
+
+                        if (false == _isCenter)
                         {
-                            VertexPoint.X = X;
-                            VertexPoint.Y = Y;
+                            if (Edge1.Restriction.HasFlag(Restriction.Length) && Edge2.Restriction.HasFlag(Restriction.Length))
+                                return;
+                            if (Edge1.Restriction.HasFlag(Restriction.Horizontal) &&  
+                                Edge2.Restriction.HasFlag(Restriction.Vertical))
+                                return;
+                            if (Edge2.Restriction.HasFlag(Restriction.Horizontal) &&
+                                Edge1.Restriction.HasFlag(Restriction.Vertical))
+                                return;
+                            if (Edge1.Restriction.HasFlag(Restriction.Horizontal | Restriction.Vertical) &&
+                                Edge2.Restriction.HasFlag(Restriction.Length))
+                                return;
+                            if (Edge2.Restriction.HasFlag(Restriction.Horizontal | Restriction.Vertical) &&
+                                Edge1.Restriction.HasFlag(Restriction.Length))
+                                return;
+
+
+                            if (Edge1.Restriction.HasFlag(Restriction.Horizontal) || Edge2.Restriction.HasFlag(Restriction.Horizontal))
+                                y = VertexPoint.Y;
+                            if (Edge1.Restriction.HasFlag(Restriction.Vertical) || Edge2.Restriction.HasFlag(Restriction.Vertical))
+                                x = VertexPoint.X;
+                            if (Edge1.Restriction.HasFlag(Restriction.Length) || Edge2.Restriction.HasFlag(Restriction.Length))
+                            {
+                                if (Edge1.Restriction.HasFlag(Restriction.Horizontal) || Edge2.Restriction.HasFlag(Restriction.Horizontal))
+                                    return;
+                                if (Edge1.Restriction.HasFlag(Restriction.Vertical) || Edge2.Restriction.HasFlag(Restriction.Vertical))
+                                    return;
+
+                                var start = Edge1.Restriction.HasFlag(Restriction.Length) ? Edge1.Vertex1 : Edge2.Vertex2;
+                                var length = Edge1.Restriction.HasFlag(Restriction.Length) ? Edge1.LengthRestrictionValue : Edge2.LengthRestrictionValue;
+                                var vector = point - start.VertexPoint;
+                                vector.Normalize();
+                                vector *= length;
+                                var end = start.VertexPoint + vector;
+                                x = end.X;
+                                y = end.Y;
+                            }
+                        }
+                        
+
+                        var dx = x - VertexPoint.X;
+                        var dy = y - VertexPoint.Y;
+                        //if (Math.Abs(dx * dx + dy * dy) >= 2)
+                        //{
+                            
+                            VertexPoint.X = x;
+                            VertexPoint.Y = y;
                             if (_myShape is MyCircle circle)
                             {
-                                circle.SetNewPositionForConcentric(new Point(X, Y));
-                            }
-                            /* Updating center*/
-                            if (!_isCenter)
-                            {
-                                if (_myShape is MyPolygon myPolygon)
-                                {
-                                    myPolygon.Center.VertexPoint.X += dx / myPolygon._vertices.Count;
-                                    myPolygon.Center.VertexPoint.Y += dy / myPolygon._vertices.Count;
-                                }
+                                circle.SetNewPositionForConcentric(new Point(x, y));
                             }
                             if (_isCenter)
                             {
@@ -93,7 +128,7 @@ namespace Lab_1
                                 }
                             }
                             VertexChanged?.Invoke(this, null);
-                        }
+                        //}
                     }
                 };
 
@@ -104,8 +139,8 @@ namespace Lab_1
                         VertexDeleted?.Invoke(this, null);
                     }
                 };
-                var myCircle = _myShape as MyCircle;
-                if (_isCenter && myCircle != null)
+                //var myCircle = _myShape as MyCircle;
+                if (_myShape is MyCircle myCircle)
                 {
                     Ellipse.ContextMenu = new ContextMenu();
                     var item1 = new MenuItem
@@ -140,7 +175,6 @@ namespace Lab_1
                             }
                             else
                             {
-                                // TODO: usun z listy
                                 MyCircle.DisboundConcentric(myCircle);
                             }
                         }

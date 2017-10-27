@@ -15,8 +15,8 @@ namespace Lab_1
     {
         public delegate void GuiUpdate(object sender, EventArgs e);
 
-        private const int Width = 1280;
-        private const int Height = 720;
+        private const int Width = 1920;
+        private const int Height = 1080;
         private const int DpiX = 96;
         private const int DpiY = 96;
         private readonly WriteableBitmap _bitmap;
