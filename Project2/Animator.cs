@@ -1,75 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace Project2
 {
     public class Animator
     {
-        private readonly object SyncRoot = new object();
-        private readonly Random rng = new Random();
-        public List<MyPolygon> randomPolygons = new List<MyPolygon>();
-        private readonly Canvas Canvas;
-        private readonly Scene Scene;
+        private const int RandomPolygonCountMax = 100;
+        private const int RandomPolygonCountMin = 0;
+        private readonly Canvas _canvas;
+        private readonly Random _rng = new Random();
+        private readonly Scene _scene;
+        private readonly object _syncRoot = new object();
+
+        private int _fps;
+        private DateTime _lastTick = DateTime.Now;
+        private DateTime _now = DateTime.Now;
+
+        private int _randomPolygonCount = 1;
+        public List<MyPolygon> RandomPolygons = new List<MyPolygon>();
         public bool Run = true;
+
+        public Animator(Canvas canvas, Scene scene)
+        {
+            _canvas = canvas;
+            _scene = scene;
+        }
 
         public string RandomPolygonsCount
         {
             get => $"{_randomPolygonCount}";
             set
             {
-                if (int.TryParse(value, out var randomPolygonCount) &&
-                    (_randomPolygonCountMin <= randomPolygonCount && randomPolygonCount <= _randomPolygonCountMax))
-                {
+                if (int.TryParse(value, out var randomPolygonCount) && RandomPolygonCountMin <= randomPolygonCount &&
+                    randomPolygonCount <= RandomPolygonCountMax)
                     Interlocked.Exchange(ref _randomPolygonCount, randomPolygonCount);
-                }
             }
         }
 
-        private int _randomPolygonCount = 5;
-        private int _randomPolygonCountMin = 0;
-        private int _randomPolygonCountMax = 100;
-
-        public Animator(Canvas canvas, Scene scene)
+        public string Fps
         {
-            Canvas = canvas;
-            Scene = scene;
-            thread = new Thread(Animate);
-            thread.Start();
-        }
-
-        public void EndAnimation()
-        {
-            Run = false;
-            thread.Abort();
-            thread.Join();
-        }
-        private readonly Thread thread;
-        public void Animate()
-        {
-            try
+            get => $"{_fps}";
+            set
             {
-                while (Run)
-                {
-                    lock (SyncRoot)
-                    {
-                        foreach (var polygon in randomPolygons)
-                        {
-                            polygon.Transform();
-                        }
-                        randomPolygons.RemoveAll(polygon => polygon.MaxX <= 0);
-                        for (var i = randomPolygons.Count; i < _randomPolygonCount; i++)
-                            randomPolygons.Add(MyPolygon.GenerateRandomPolygon(1920, 1080, rng, Canvas, Scene,
-                                Scene.velocityMin, Scene.velocityMax));
-                        Thread.Sleep(1000/60);
-                    }
-                }
+                if (int.TryParse(value, out var v))
+                    _fps = v;
             }
-            catch { }
+        }
+
+
+        public void DoTick()
+        {
+            _now = DateTime.Now;
+            var dt = _now.Subtract(_lastTick).TotalMilliseconds;
+            _scene.fpsCounter.Dispatcher.Invoke(() => { _scene.fpsCounter.Content = $"FPS: {(int) (1000 / dt)}"; });
+            foreach (var polygon in RandomPolygons)
+                polygon.Transform();
+            RandomPolygons.RemoveAll(polygon => polygon.MaxX <= 0);
+            for (var i = RandomPolygons.Count; i < _randomPolygonCount; i++)
+            {
+                var poly = MyPolygon.GenerateRandomPolygon(1920, 1080, _rng, _canvas, _scene,
+                    _scene.velocityMin, _scene.velocityMax);
+                RandomPolygons.Add(poly);
+            }
+            _lastTick = DateTime.Now;
         }
     }
 }

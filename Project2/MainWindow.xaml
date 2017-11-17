@@ -158,46 +158,7 @@
                     </GroupBox>
                 </StackPanel>
             </GroupBox>
-            <GroupBox>
-                <GroupBox.Header>
-                    <Label>Mapowanie normalnych</Label>
-                </GroupBox.Header>
-                <StackPanel Orientation="Vertical">
-                    <GroupBox>
-                        <GroupBox.Header>
-                            <WrapPanel>
-                                <RadioButton Name="ConstNormalVectorCheckbox" GroupName="NormalMapping"
-                                             VerticalAlignment="Center" Checked="RadioButtonChanged" />
-                                <Label>Stały [0, 0, 1]</Label>
-                            </WrapPanel>
-                        </GroupBox.Header>
-
-                    </GroupBox>
-                    <GroupBox>
-                        <GroupBox.Header>
-                            <WrapPanel>
-                                <RadioButton Name="NormalMapCheckbox" GroupName="NormalMapping"
-                                             VerticalAlignment="Center" />
-                                <Label>Tekstura (Normal Map)</Label>
-                            </WrapPanel>
-                        </GroupBox.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
-                                <Image Name="NormalMapImagePreview" Width="50" Height="50" />
-                            </Border>
-                            <Button Grid.Column="1" Margin="5,5,5,5" Height="20" Name="NormalMapButton"
-                                    Click="LoadBitmap">
-                                ...
-                            </Button>
-                        </Grid>
-                    </GroupBox>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox>
+          <GroupBox>
                 <GroupBox.Header>
                     <Label>Mapowanie wysokości</Label>
                 </GroupBox.Header>
@@ -206,7 +167,7 @@
                         <GroupBox.Header>
                             <WrapPanel>
                                 <RadioButton Name="ConstNoneHeightMap" GroupName="HeightMapping"
-                                             VerticalAlignment="Center" />
+                                             VerticalAlignment="Center" Checked="RadioButtonChanged"/>
                                 <Label>Brak [0, 0, 0]</Label>
                             </WrapPanel>
                         </GroupBox.Header>
@@ -237,7 +198,10 @@
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
-                    <Label>Parametry sceny</Label>
+                    <WrapPanel>
+                        <Label>Parametry sceny</Label>
+                        <Label Name="FpsCounter"></Label>
+                    </WrapPanel>
                 </GroupBox.Header>
                 <WrapPanel Orientation="Vertical">
                     <GroupBox>
@@ -257,12 +221,17 @@
                         </GroupBox.Header>
                         <WrapPanel Orientation="Horizontal">
                             <TextBlock>Ilość: </TextBlock>
-                            <TextBox Name="XTextBox" MaxLength="5" Width="50" Text="{Binding RandomPolygonCount}" />
+                            <TextBox Name="CountRPolygon" MaxLength="5" Width="50" Text="{Binding RandomPolygonCount}" />
                         </WrapPanel>
                     </GroupBox>
                 </WrapPanel>
             </GroupBox>
-
+            <GroupBox>
+                <ListBox Name="MyyPolygons">
+                    <ListBox.SelectionMode>Single</ListBox.SelectionMode>
+                </ListBox>
+                
+            </GroupBox>
         </WrapPanel>
     </Grid>
 </Window>

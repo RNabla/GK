@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Numerics;
+using System.Windows.Media.Media3D;
+
 namespace Project2
 {
     public class MyLight
@@ -16,41 +18,45 @@ namespace Project2
             X = 960;
             Y = 540;
             Z = 500;
-            Color = Colors.DarkRed;
-            _ligthVector = new Vector3(X,Y,Z);
+            Color = Colors.White;
+            lightVector = new Vector3(X,Y,Z);
         }
 
-        private Vector3 _ligthVector;
+        public Point3D LightPos = new Point3D(960,540,500);
+        private Vector3 lightVector;
         public int X
         {
-            get => (int)_ligthVector.X;
+            get => (int)lightVector.X;
             set
             {
                 if (value <= 0)
                     return;
-                _ligthVector.X = value;
+                lightVector.X = value;
+                
             }
             
         }
         public int Y
         {
-            get => (int)_ligthVector.Y;
+            get => (int)lightVector.Y;
             set
             {
                 if (value <= 0)
                     return;
-                _ligthVector.Y = value;
+                lightVector.Y = value;
+                LightPos = new Point3D(X, Y, Z);
             }
         }
 
         public int Z
         {
-            get => (int)_ligthVector.Z;
+            get => (int)lightVector.Z;
             set
             {
                 if (value <= 0)
                     return;
-                _ligthVector.Z = value;
+                lightVector.Z = value;
+                LightPos = new Point3D(X, Y, Z);
             }
         }
 
