@@ -1,0 +1,81 @@
+﻿<Window x:Class="Project3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <WrapPanel Orientation="Horizontal">
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>RGB</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions> 
+                    <Label Grid.Row="0" Grid.Column="0">R</Label>
+                    <Label Grid.Row="1" Grid.Column="0">G</Label>
+                    <Label Grid.Row="2" Grid.Column="0">B</Label>
+                    <TextBox Name="RGBRValue" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
+                    <TextBox Name="RGBGValue" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
+                    <TextBox Name="RGBBValue" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
+                    <Slider Name="RGBRSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="RGBGSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="RGBBSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                </Grid>                                                                                                               
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>CMYK</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">C</Label>
+                    <Label Grid.Row="1" Grid.Column="0">M</Label>
+                    <Label Grid.Row="2" Grid.Column="0">Y</Label>
+                    <Label Grid.Row="3" Grid.Column="0">K</Label>
+                    <TextBox Name="CMYKCValue" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="CMYKMValue" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="CMYKYValue" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="CMYKKValue" Grid.Row="3" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="CMYKCSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="CMYKMSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="CMYKYSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="CMYKKSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="3" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                </Grid>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>RGB</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Border>
+                        <Rectangle Name="FillRectangle">
+                            
+                        </Rectangle>
+                    </Border>
+                </Grid>
+            </GroupBox>
+        </WrapPanel>
+    </Grid>
+</Window>

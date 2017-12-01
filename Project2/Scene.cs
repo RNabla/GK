@@ -25,7 +25,6 @@ namespace Project2
         public Animator Animator;
         public Image Background;
 
-        public uint[,] bgrd = new uint[1920, 1080];
         public WriteableBitmap bitmap = new WriteableBitmap(1920, 1080, 96, 96, PixelFormats.Bgr32, null);
         public WriteableBitmap blankBitmap = new WriteableBitmap(1920, 1080, 96, 96, PixelFormats.Bgr32, null);
         public Canvas Canvas;
