@@ -64,11 +64,16 @@ namespace Project3.MyColorSpaces
         {
             return C == other.C && M == other.M && Y == other.Y && K == other.K;
         }
+
         public IRgb ToRgb()
         {
-            var r = (byte) Math.Min(0, 0xff - (_c + _k));
-            var g = (byte) Math.Min(0, 0xff - (_m + _k));
-            var b = (byte) Math.Min(0, 0xff - (_y + _k));
+            var c = _c + _k;
+            var m = _m + _k;
+            var y = _y + _k;
+
+            var r = (byte) (0xff - Math.Min(c, 0xff));
+            var g = (byte) (0xff - Math.Min(m, 0xff));
+            var b = (byte) (0xff - Math.Min(y, 0xff));
             return new MyRgb(r, g, b);
         }
 

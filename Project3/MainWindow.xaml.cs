@@ -15,6 +15,7 @@ namespace Project3
     {
         private readonly MyCmyk _myCmyk = new MyCmyk(0, 0, 0, 0);
         private readonly MyRgb _myRgb = new MyRgb(0, 0, 0);
+        private readonly MyXyz _myXyz = new MyXyz(0, 0, 0);
 
         private bool _isUpdating;
 
@@ -23,6 +24,7 @@ namespace Project3
             InitializeComponent();
             InitRgb();
             InitCmyk();
+            InitXyz();
             UpdateFromRgb();
             UpdateFillRectangle();
         }
@@ -35,6 +37,15 @@ namespace Project3
             RGBRValue.DataContext = _myRgb;
             RGBGValue.DataContext = _myRgb;
             RGBBValue.DataContext = _myRgb;
+        }
+        private void InitXyz()
+        {
+            XYZXSlider.DataContext = _myXyz;
+            XYZYSlider.DataContext = _myXyz;
+            XYZZSlider.DataContext = _myXyz;
+            XYZXValue.DataContext = _myXyz;
+            XYZYValue.DataContext = _myXyz;
+            XYZZValue.DataContext = _myXyz;
         }
 
         private void InitCmyk()
@@ -69,6 +80,7 @@ namespace Project3
             UpdateRgb(rgb);
             var cmyk = _myRgb.ToCmyk();
             UpdateCmyk(cmyk);
+            UpdateXyz(_myRgb.ToXyz());
         }
 
         private void UpdateFromCmyk()
@@ -82,6 +94,7 @@ namespace Project3
             UpdateCmyk(cmyk);
             var rgb = _myCmyk.ToRgb();
             UpdateRgb(rgb);
+            UpdateXyz(rgb.ToXyz());
         }
 
         private void UpdateRgb(IRgb myRgb, bool force = false)
@@ -116,6 +129,22 @@ namespace Project3
                 CMYKMValue.Text = $"{myCmyk.M}";
                 CMYKYValue.Text = $"{myCmyk.Y}";
                 CMYKKValue.Text = $"{myCmyk.K}";
+            }
+        }
+
+        private void UpdateXyz(IXyz myXyz)
+        {
+            if (!myXyz.Equals(_myXyz))
+            {
+                _myXyz.X = myXyz.X;
+                _myXyz.Y = myXyz.Y;
+                _myXyz.Z = myXyz.Z;
+                XYZXSlider.Value = (int)myXyz.X;
+                XYZYSlider.Value = (int)myXyz.Y;
+                XYZZSlider.Value = (int)myXyz.Z;
+                XYZXValue.Text = $"{myXyz.X:F1}";
+                XYZYValue.Text = $"{myXyz.Y:F1}";
+                XYZZValue.Text = $"{myXyz.Z:F1}";
             }
         }
 

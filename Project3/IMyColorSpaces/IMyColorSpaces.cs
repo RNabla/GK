@@ -12,6 +12,7 @@
         double X { get; set; }
         double Y { get; set; }
         double Z { get; set; }
+        IRgb ToRgb();
     }
 
     public interface IYuv
@@ -57,6 +58,7 @@
         double G { get; set; }
         double B { get; set; }
         ICmyk ToCmyk();
+        IXyz ToXyz();
         bool Equals(IRgb other);
 
     }

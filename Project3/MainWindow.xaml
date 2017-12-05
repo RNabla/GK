@@ -66,7 +66,34 @@
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
-                    <Label>RGB</Label>
+                    <Label>XYZ</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">X</Label>
+                    <Label Grid.Row="1" Grid.Column="0">Y</Label>
+                    <Label Grid.Row="2" Grid.Column="0">Z</Label>
+                    <TextBox Name="XYZXValue" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="XYZYValue" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="XYZZValue" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="XYZXSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="XYZYSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="XYZZSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                </Grid>
+            </GroupBox>
+
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>Kwadrat z kolorem</Label>
                 </GroupBox.Header>
                 <Grid>
                     <Border>

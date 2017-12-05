@@ -80,6 +80,15 @@ namespace Project3.MyColorSpaces
             return new MyCmyk(c, m, y, k);
         }
 
+        public IXyz ToXyz()
+        {
+            var x = 0.490000 * _r + 0.310000 * _g + 0.200000 * _b;
+            var y = 0.176970 * _r + 0.812400 * _g + 0.010630 * _b;
+            var z = 0.000000 * _r + 0.010000 * _g + 0.990000 * _b;
+
+            return new MyXyz(x, y, z);
+        }
+
         public bool Equals(IRgb other)
         {
             return R == other.R && G == other.G && B == other.B;
