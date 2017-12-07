@@ -1,37 +1,43 @@
 ﻿using System;
+using System.CodeDom;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 using Project3.Annotations;
 using Project3.IMyColorSpaces;
 
 namespace Project3.MyColorSpaces
 {
-    public class MyRgb : IRgb, INotifyPropertyChanged, IComparable<SolidColorBrush>
+    public class MyRgb : IRgb, INotifyPropertyChanged, IComparable<SolidColorBrush>, IMyColor
     {
-        private byte _b;
-        private byte _g;
-        private byte _r;
+        /*
+         * Wartości od 0 do 255
+         */
+        private double _r;
+        private double _g;
+        private double _b;
 
-        public MyRgb(byte r, byte g, byte b)
+
+        public MyRgb(double r, double g, double b)
         {
-            R = r;
-            G = g;
-            B = b;
+            _r = r;
+            _g = g;
+            _b = b;
         }
-
+        
         public double R
         {
             get => _r;
             set
             {
-                if (MathExtender.CheckRange(0, 255, (int) value))
-                {
-                    if (Math.Abs(_r - value) >= 1){
-                        _r = (byte) value;
-                        OnPropertyChanged(nameof(R));
-                    }
-                }
+                //if (MathExtender.CheckRange(0, 255, (int) value))
+                //{
+                //    if (Math.Abs(_r - value) >= 1){
+                _r = value;
+                //        OnPropertyChanged(nameof(R));
+                //    }
+                //}
             }
         }
 
@@ -82,11 +88,141 @@ namespace Project3.MyColorSpaces
 
         public IXyz ToXyz()
         {
-            var x = 0.490000 * _r + 0.310000 * _g + 0.200000 * _b;
-            var y = 0.176970 * _r + 0.812400 * _g + 0.010630 * _b;
-            var z = 0.000000 * _r + 0.010000 * _g + 0.990000 * _b;
 
-            return new MyXyz(x, y, z);
+            var r = _r / 2.55;
+            var g = _g / 2.55;
+            var b = _b / 2.55;
+            return new MyXyz(
+                r ,
+                g ,
+                b ,
+                MyXyz.MyLuminant.D65
+            );
+
+            // http://entropymine.com/imageworsener/srgbformula/
+
+            //double Transform(double l)
+            //{
+            //    if (MathExtender.CheckRange(0, 0.0031308, l))
+            //    {
+            //        return 12.92 * l;
+            //    }
+            //    return 1.055 * Math.Pow(l, 1.0 / 2.4) - 0.055;
+            //}
+            //var r = _r/255.0;
+            //var g = _g/255.0;
+            //var b = _b/255.0;
+
+            ////var x = 0.490000 * r + 0.310000 * g + 0.200000 * b;
+            ////var y = 0.176970 * r + 0.812400 * g + 0.010630 * b;
+            ////var z = 0.000000 * r + 0.010000 * g + 0.990000 * b;
+            //var x = 0.490000 * r + 0.310000 * g + 0.200000 * b;
+            //var y = 0.176970 * r + 0.812400 * g + 0.010630 * b;
+            //var z = 0.000000 * r + 0.010000 * g + 0.990000 * b;
+
+            //return new MyXyz(x, y, z);
+        }
+
+        public IHsl ToHsl()
+        {
+            var r = _r / 255.0;
+            var g = _g / 255.0;
+            var b = _b / 255.0;
+
+            var cMax = Math.Max(Math.Max(r, g), b);
+            var cMin = Math.Min(Math.Min(r, g), b);
+            var delta = cMax - cMin;
+            double h, s, l;
+            if (delta == 0)
+            {
+                h = 0;
+            }
+            else if (cMax == r)
+            {
+                h = 60 * ((g - b) / delta % 6);
+            }
+            else if (cMax == g)
+            {
+                h = 60 * ((b - r) / delta + 2);
+            }
+            else
+            {
+                h = 60 * ((r - g) / delta + 4);
+            }
+            l = (cMax + cMin) / 2;
+            s = (delta == 0) ? (0) : (delta / (1 - Math.Abs(2 * l - 1)));
+
+            if (h < 0)
+                h += 360.0;
+            s *= 100;
+            l *= 100;
+            return new MyHsl(h,s,l);
+        }
+
+        public IHsv ToHsv()
+        {
+            var r = _r / 255.0;
+            var g = _g / 255.0;
+            var b = _b / 255.0;
+
+            var cMax = Math.Max(Math.Max(r, g), b);
+            var cMin = Math.Min(Math.Min(r, g), b);
+            var delta = cMax - cMin;
+            double h, s, v;
+            if (delta == 0)
+            {
+                h = 0;
+            }
+            else if (cMax == r)
+            {
+                h = 60 * ((g - b) / delta % 6);
+            }
+            else if (cMax == g)
+            {
+                h = 60 * ((b - r) / delta + 2);
+            }
+            else /* cMax == b */
+            {
+                h = 60 * ((r - g) / delta + 4);
+            }
+            s = (cMax == 0) ? (0) : (delta / cMax);
+            v = cMax;
+
+            if (h < 0)
+                h += 360.0;
+            s *= 100;
+            v *= 100;
+            return new MyHsv(h, s, v);
+        }
+
+        public IYuv ToYuv()
+        {
+            var r = _r / 255.0;
+            var g = _g / 255.0;
+            var b = _b / 255.0;
+
+            //var y = 0.000 + 0.299 * r + 0.587 * g + 0.114 * b;
+            //var u = 0.000 - 0.147 * r - 0.289 * g + 0.437 * b;
+            //var v = 0.000 + 0.615 * r - 0.515 * g - 0.100 * b;
+
+            var y = 0.299 * r + 0.587 * g + 0.114 * b;
+            var u = 0.492 * (b - y);
+            var v = 0.877 * (r - y);
+            return new MyYuv(y, u, v);
+        }
+
+        public IYCbCr ToYCbCr()
+        {
+            var r = _r / 255.0;
+            var g = _g / 255.0;
+            var b = _b / 255.0;
+
+            var y = 0.299 * r + 0.587 * g + 0.114 * b;
+            var cb = (r - y) / 1.772 + 0.5;
+            var cr = (r - y) / 1.402 + 0.5;
+
+            return new MyYCbCr(y, cb, cr);
+
         }
 
         public bool Equals(IRgb other)
@@ -104,14 +240,30 @@ namespace Project3.MyColorSpaces
 
         public int CompareTo(SolidColorBrush other)
         {
-            var dr = other.Color.R - _r;
+            var dr = ((double)other.Color.R).CompareTo(_r);
             if (dr != 0)
                 return dr;
-            var dg = other.Color.G - _g;
+            var dg = ((double)other.Color.G).CompareTo(_g);
             if (dg != 0)
                 return dg;
-            return other.Color.B - _b;
+            return ((double)other.Color.B).CompareTo(_b);
 
+        }
+
+        public ILab ToLab()
+        {
+            return ToXyz().ToLab();
+        }
+
+        public Visibility IsRepresentable
+        {
+            get
+            {
+                var r = MathExtender.CheckRange(0, 255, (int) _r);
+                var g = MathExtender.CheckRange(0, 255, (int) _g);
+                var b = MathExtender.CheckRange(0, 255, (int) _b);
+                return r && g && b ? Visibility.Hidden : Visibility.Visible;
+            }
         }
     }
 }

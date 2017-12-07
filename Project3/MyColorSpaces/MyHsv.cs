@@ -1,91 +1,50 @@
 ﻿using System;
-using static Project3.MathExtender;
+using Project3.IMyColorSpaces;
 namespace Project3.MyColorSpaces
 {
-    internal class MyHsv
+    internal class MyHsv : IHsv
     {
-        public int H
+
+        /*
+         * H - <0,360>
+         * S - <0,100>
+         * L - <0,50>
+         */
+        private double _h;
+        private double _s;
+        private double _v;
+
+        public MyHsv(double h, double s, double v)
         {
-            get => _h;
-            set
-            {
-                if (CheckRange(0, 359, value))
-                    _h = value;
-            }
+            _h = h;
+            _s = s;
+            _v = v;
         }
 
-        public int S
+        public double H { get => _h; set => _h = value; }
+        public double S { get => _s; set => _s = value; }
+        public double V { get => _v; set => _v = value; }
+        public IRgb ToRgb()
         {
-            get => _s;
-            set
-            {
-                if (CheckRange(0, 100, value))
-                    _s = value;
-            }
-        }
-        public int V
-        {
-            get => _v;
-            set
-            {
-                if (CheckRange(0, 100, value))
-                    _v = value;
-            }
-        }
+            double r, g, b;
 
-        private int _h;
-        private int _s;
-        private int _v;
-        public MyHsv(int h, int s, int v)
-        {
-            H = h;
-            S = s;
-            V = v;
-        }
+            var c = _v * _s;
+            var x = c * (1 - Math.Abs((_h / 60.0) % 2.0 - 1));
+            var m = _v - c;
 
-        public void FromMyRgb(MyRgb myRgb)
-        {
-            var r = myRgb.R;
-            var g = myRgb.G;
-            var b = myRgb.B;
+            if (MathExtender.CheckRange(0, 60, x)) { r = c; g = x; b = 0; }
+            else if (MathExtender.CheckRange(60, 120, x)) { r = x; g = c; b = 0; }
+            else if (MathExtender.CheckRange(120, 180, x)) { r = 0; g = c; b = x; }
+            else if (MathExtender.CheckRange(180, 240, x)) { r = 0; g = x; b = c; }
+            else if (MathExtender.CheckRange(240, 300, x)) { r = x; g = 0; b = c; }
+            else if (MathExtender.CheckRange(300, 360, x)) { r = c; g = 0; b = x; }
+            else throw new NotSupportedException();
 
-            var temp = Math.Min(Math.Min(r, g), b);
-            V = (int)Math.Max(Math.Max(r, g), b);
-            if (V == temp)
-            {
-                H = 0;
-            }
-            else
-            {
-                if (V == r)
-                    H = (int)(0 + (g - b) * 60 / (V - temp));
-                else if (V == g)
-                    H = (int)(120 + (b - r) * 60 / (V - temp));
-                else if (V == b)
-                    H = (int)(240 + (r - g) * 60 / (V - temp));
-            }
-            if (H < 0)
-                H += 360;
-
-            if (V == 0)
-                S = 0;
-            else
-                S = (int)((V - temp) * 100 / V);
-            V = (100 * V) / 0xff;
-        }
-
-        public void ToMyRgb()
-        {
-            var part = H / 60.0;
-            var range = (int) Math.Floor(part) % 6;
-            var frac = part - Math.Floor(part);
-
-            var v = V * 0xff;
-            var p = v * (100 - S);
-            var q = v * (100 - frac * S);
-            var t = v * (100 - (1 - frac) * S);
-
-
+            return new MyRgb(
+                (byte)((r + m) * 255),
+                (byte)((g + m) * 255),
+                (byte)((b + m) * 255)
+            );
         }
     }
 }

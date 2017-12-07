@@ -1,10 +1,19 @@
-﻿namespace Project3.IMyColorSpaces
+﻿using System.Windows;
+
+namespace Project3.IMyColorSpaces
 {
+    public interface IMyColor
+    {
+        ILab ToLab();
+        //bool IsRepresentable { get; }
+        Visibility IsRepresentable { get; }
+    }
     public interface ILab
     {
         double L { get; set; }
         double A { get; set; }
         double B { get; set; }
+        IXyz ToXyz();
     }
 
     public interface IXyz
@@ -13,6 +22,7 @@
         double Y { get; set; }
         double Z { get; set; }
         IRgb ToRgb();
+        ILab ToLab();
     }
 
     public interface IYuv
@@ -20,6 +30,7 @@
         double Y { get; set; }
         double U { get; set; }
         double V { get; set; }
+        IRgb ToRgb();
     }
 
     public interface IHsl
@@ -27,6 +38,7 @@
         double H { get; set; }
         double S { get; set; }
         double L { get; set; }
+        IRgb ToRgb();
     }
 
     public interface IHsv
@@ -34,6 +46,7 @@
         double H { get; set; }
         double S { get; set; }
         double V { get; set; }
+        IRgb ToRgb();
     }
 
     public interface IYCbCr
@@ -41,6 +54,7 @@
         double Y { get; set; }
         double Cb { get; set; }
         double Cr { get; set; }
+        IRgb ToRgb();
     }
 
     public interface ICmyk
@@ -59,7 +73,10 @@
         double B { get; set; }
         ICmyk ToCmyk();
         IXyz ToXyz();
+        IHsl ToHsl();
+        IHsv ToHsv();
+        IYuv ToYuv();
+        IYCbCr ToYCbCr();
         bool Equals(IRgb other);
-
     }
 }

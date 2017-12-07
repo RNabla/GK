@@ -1,52 +1,67 @@
-﻿using System.Windows.Media.Media3D;
+﻿using System;
+using Project3.IMyColorSpaces;
 
 namespace Project3.MyColorSpaces
 {
-    internal class MyYuv
+    internal class MyYuv : IYuv
     {
-        // const stollen borrowed from https://en.wikipedia.org/wiki/YUV
-        private const double UMax = 0.436;
+        private double _u;
+        private double _v;
+        private double _y;
 
-        private const double VMax = 0.615;
-
-        private static readonly Matrix3D RgbToYuvTransformationMatrix;
-        private static readonly Matrix3D YuvToRgbTransformationMatrix;
-        public double U;
-        public double V;
-        public double Y;
-
-        static MyYuv()
+        public MyYuv(double y, double u, double v)
         {
-            RgbToYuvTransformationMatrix = new Matrix3D(
-                0.299, 0.587, 0.114, 0,
-                -0.14713, -0.28886, 0.436, 0,
-                0.615, -0.51499, -0.10001, 0,
-                0, 0, 0, 1
-            );
-            YuvToRgbTransformationMatrix = new Matrix3D(
-                1, 0, 1.13983, 0,
-                1, -0.39465, -0.58060, 0,
-                1, 2.03211, 0, 0,
-                0, 0, 0, 1
-            );
+            _y = y;
+            _u = u;
+            _v = v;
         }
 
-        public MyYuv(MyRgb myRgb)
+        private const double Precision = 1e-3;
+
+        public double Y
         {
-            var r = new Vector3D(128, 0, 0);
-            var output = Vector3D.Multiply(r, RgbToYuvTransformationMatrix);
+            get => _y;
+            set
+            {
+                if (MathExtender.CheckRange(0, 1.0, value))
+                    if (Math.Abs(_y - value) > Precision)
+                        _y = value;
+            }
         }
 
-        public void From(MyRgb myRgb)
+        public double U
         {
-            var r = myRgb.R / 256.0;
-            var g = myRgb.G / 256.0;
-            var b = myRgb.B / 256.0;
-            Y = 0.299 * r +
-                0.587 * g +
-                0.114 + b;
-            U = 0.492 * (b - Y);
-            V = 0.877 * (r - Y);
+            get => _u;
+            set
+            {
+                if (MathExtender.CheckRange(-0.289, 0.436, value))
+                    if (Math.Abs(_u - value) > Precision)
+                        _u = value;
+            }
+        }
+
+        public double V
+        {
+            get => _v;
+            set
+            {
+                if (MathExtender.CheckRange(-0.615, 0.615, value))
+                    if (Math.Abs(_v - value) > Precision)
+                        _v = value;
+            }
+        }
+
+        public IRgb ToRgb()
+        {
+            var r = _y + _v / 0.877;
+            var b = _y + _u / 0.492;
+            var g = (_y - 0.299 * r - 0.114 * b) / 0.587;
+
+            return new MyRgb(
+                (byte)Math.Round(r * 255.0),
+                (byte)Math.Round(g * 255.0),
+                (byte)Math.Round(b * 255.0)
+            );
         }
     }
 }

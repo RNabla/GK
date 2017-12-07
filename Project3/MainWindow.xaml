@@ -5,12 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project3"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="293.898" Width="912.372">
     <Grid>
         <WrapPanel Orientation="Horizontal">
             <GroupBox>
                 <GroupBox.Header>
-                    <Label>RGB</Label>
+                    <WrapPanel>
+                        <Label>RGB</Label>
+                        <Label Name ="RgbVisible" Visibility="{Binding IsRepresentable}">Nie prezentowalny</Label>
+                    </WrapPanel>
                 </GroupBox.Header>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -22,17 +25,17 @@
                         <ColumnDefinition Width="25" />
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions> 
+                    </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0">R</Label>
                     <Label Grid.Row="1" Grid.Column="0">G</Label>
                     <Label Grid.Row="2" Grid.Column="0">B</Label>
-                    <TextBox Name="RGBRValue" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
-                    <TextBox Name="RGBGValue" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
-                    <TextBox Name="RGBBValue" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
-                    <Slider Name="RGBRSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="RGBGSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="RGBBSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
-                </Grid>                                                                                                               
+                    <TextBox Name="RgbValueR" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
+                    <TextBox Name="RgbValueG" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
+                    <TextBox Name="RgbValueB" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
+                    <Slider Name="RgbSliderR" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="RgbSliderG" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="RgbSliderB" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="255" ValueChanged="ColorChanged" />
+                </Grid>
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
@@ -54,14 +57,118 @@
                     <Label Grid.Row="1" Grid.Column="0">M</Label>
                     <Label Grid.Row="2" Grid.Column="0">Y</Label>
                     <Label Grid.Row="3" Grid.Column="0">K</Label>
-                    <TextBox Name="CMYKCValue" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
-                    <TextBox Name="CMYKMValue" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
-                    <TextBox Name="CMYKYValue" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
-                    <TextBox Name="CMYKKValue" Grid.Row="3" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
-                    <Slider Name="CMYKCSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="CMYKMSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="CMYKYSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="CMYKKSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="3" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <TextBox Name="CmykValueC" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="CmykValueM" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="CmykValueY" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="CmykValueK" Grid.Row="3" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="CmykSliderC" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="CmykSliderM" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="CmykSliderY" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="CmykSliderK" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="3" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                </Grid>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>HSL</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">H</Label>
+                    <Label Grid.Row="1" Grid.Column="0">S</Label>
+                    <Label Grid.Row="2" Grid.Column="0">L</Label>
+                    <TextBox Name="HslValueH" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="HslValueS" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="HslValueL" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="HslSliderH" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="360" ValueChanged="ColorChanged" />
+                    <Slider Name="HslSliderS" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="100" ValueChanged="ColorChanged" />
+                    <Slider Name="HslSliderL" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="100" ValueChanged="ColorChanged" />
+                </Grid>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>HSV</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">H</Label>
+                    <Label Grid.Row="1" Grid.Column="0">S</Label>
+                    <Label Grid.Row="2" Grid.Column="0">V</Label>
+                    <TextBox Name="HsvValueH" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="HsvValueS" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="HsvValueV" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="HsvSliderH" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="360" ValueChanged="ColorChanged" />
+                    <Slider Name="HsvSliderS" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="100" ValueChanged="ColorChanged" />
+                    <Slider Name="HsvSliderV" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="100" ValueChanged="ColorChanged" />
+                </Grid>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>YUV</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">Y</Label>
+                    <Label Grid.Row="1" Grid.Column="0">U</Label>
+                    <Label Grid.Row="2" Grid.Column="0">V</Label>
+                    <TextBox Name="YuvValueY" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="YuvValueU" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="YuvValueV" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="YuvSliderY" IsSnapToTickEnabled="True" TickFrequency="0.001" Grid.Row="0" Grid.Column="1" Minimum="-1" Maximum="1" ValueChanged="ColorChanged" />
+                    <Slider Name="YuvSliderU" IsSnapToTickEnabled="True" TickFrequency="0.001" Grid.Row="1" Grid.Column="1" Minimum="-1" Maximum="1" ValueChanged="ColorChanged" />
+                    <Slider Name="YuvSliderV" IsSnapToTickEnabled="True" TickFrequency="0.001" Grid.Row="2" Grid.Column="1" Minimum="-1" Maximum="1" ValueChanged="ColorChanged" />
+                </Grid>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>YCbCr</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">Y</Label>
+                    <Label Grid.Row="1" Grid.Column="0">Cb</Label>
+                    <Label Grid.Row="2" Grid.Column="0">Cr</Label>
+                    <TextBox Name="YCbCrValueY" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="YCbCrValueCb" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="YCbCrValueCr" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="YCbCrSliderY" IsSnapToTickEnabled="True" TickFrequency="0.001" Grid.Row="0" Grid.Column="1" Maximum="1" ValueChanged="ColorChanged" />
+                    <Slider Name="YCbCrSliderCb" IsSnapToTickEnabled="True" TickFrequency="0.001" Grid.Row="1" Grid.Column="1" Maximum="1" ValueChanged="ColorChanged" />
+                    <Slider Name="YCbCrSliderCr" IsSnapToTickEnabled="True" TickFrequency="0.001" Grid.Row="2" Grid.Column="1" Maximum="1" ValueChanged="ColorChanged" />
                 </Grid>
             </GroupBox>
             <GroupBox>
@@ -82,23 +189,48 @@
                     <Label Grid.Row="0" Grid.Column="0">X</Label>
                     <Label Grid.Row="1" Grid.Column="0">Y</Label>
                     <Label Grid.Row="2" Grid.Column="0">Z</Label>
-                    <TextBox Name="XYZXValue" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
-                    <TextBox Name="XYZYValue" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
-                    <TextBox Name="XYZZValue" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
-                    <Slider Name="XYZXSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="XYZYSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="XYZZSlider" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Maximum="255" ValueChanged="ColorChanged" />
+                    <TextBox Name="XyzValueX" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="XyzValueY" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="XyzValueZ" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="XyzSliderX" IsSnapToTickEnabled="True" TickFrequency="0.1" Grid.Row="0" Grid.Column="1" Maximum="95.0" ValueChanged="ColorChanged" />
+                    <Slider Name="XyzSliderY" IsSnapToTickEnabled="True" TickFrequency="0.1" Grid.Row="1" Grid.Column="1" Maximum="100" ValueChanged="ColorChanged" />
+                    <Slider Name="XyzSliderZ" IsSnapToTickEnabled="True" TickFrequency="0.1" Grid.Row="2" Grid.Column="1" Maximum="108.8" ValueChanged="ColorChanged" />
                 </Grid>
             </GroupBox>
-
+            <GroupBox>
+                <GroupBox.Header>
+                    <Label>Lab</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">L</Label>
+                    <Label Grid.Row="1" Grid.Column="0">A</Label>
+                    <Label Grid.Row="2" Grid.Column="0">B</Label>
+                    <TextBox Name="LabValueL" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="LabValueA" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <TextBox Name="LabValueB" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus"></TextBox>
+                    <Slider Name="LabSliderL" IsSnapToTickEnabled="True" TickFrequency="0.01" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100"         ValueChanged="ColorChanged"/>
+                    <Slider Name="LabSliderA" IsSnapToTickEnabled="True" TickFrequency="0.01" Grid.Row="1" Grid.Column="1" Minimum="-85.88" Maximum="98.590" ValueChanged="ColorChanged"/>
+                    <Slider Name="LabSliderB" IsSnapToTickEnabled="True" TickFrequency="0.01" Grid.Row="2" Grid.Column="1" Minimum="-108.79" Maximum="93.98" ValueChanged="ColorChanged"/>
+                </Grid>
+            </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
                     <Label>Kwadrat z kolorem</Label>
                 </GroupBox.Header>
                 <Grid>
-                    <Border>
+                    <Border BorderBrush="Black" BorderThickness="2">
                         <Rectangle Name="FillRectangle">
-                            
+
                         </Rectangle>
                     </Border>
                 </Grid>

@@ -8,6 +8,9 @@ namespace Project3.MyColorSpaces
 {
     public class MyCmyk : ICmyk
     {
+        /*
+         * Wartości od 0 do 255
+         */
         private byte _c;
         private byte _k;
         private byte _m;
