@@ -6,17 +6,19 @@ using Project3.IMyColorSpaces;
 
 namespace Project3.MyColorSpaces
 {
-    public class MyCmyk : ICmyk
+    public class MyCmyk : ICmyk , IMyColor
     {
         /*
          * Wartości od 0 do 255
          */
-        private byte _c;
-        private byte _k;
-        private byte _m;
-        private byte _y;
+        private double _c;
+        private double _k;
+        private double _m;
+        private double _y;
 
-        public MyCmyk(byte c, byte m, byte y, byte k)
+        
+
+        public MyCmyk(double c, double m, double y, double k)
         {
             _c = c;
             _m = m;
@@ -86,6 +88,11 @@ namespace Project3.MyColorSpaces
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public ILab ToLab()
+        {
+            return ToRgb().ToXyz().ToLab();
         }
     }
 }

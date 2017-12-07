@@ -3,7 +3,7 @@ using Project3.IMyColorSpaces;
 
 namespace Project3.MyColorSpaces
 {
-    internal class MyYuv : IYuv
+    internal class MyYuv : IYuv, IMyColor
     {
         private double _u;
         private double _v;
@@ -58,10 +58,14 @@ namespace Project3.MyColorSpaces
             var g = (_y - 0.299 * r - 0.114 * b) / 0.587;
 
             return new MyRgb(
-                (byte)Math.Round(r * 255.0),
-                (byte)Math.Round(g * 255.0),
-                (byte)Math.Round(b * 255.0)
+                Math.Round(r * 255.0),
+                Math.Round(g * 255.0),
+                Math.Round(b * 255.0)
             );
+        }
+        public ILab ToLab()
+        {
+            return ToRgb().ToXyz().ToLab();
         }
     }
 }

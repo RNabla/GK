@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Project3.IMyColorSpaces;
 
 namespace Project3.MyColorSpaces
 {
-    class MyYCbCr : IYCbCr
+    class MyYCbCr : IYCbCr , IMyColor
     {
-        public double _y;
-        public double _cb;
-        public double _cr;
-
+        private double _y;
+        private double _cb;
+        private double _cr;
+            
         public MyYCbCr(double y, double cb, double cr)
         {
             _y = y;
@@ -30,11 +26,15 @@ namespace Project3.MyColorSpaces
             var g = (_y - 0.299 * r - 0.114 * b) / 0.587;
 
             return new MyRgb(
-                (byte)Math.Round(r * 255.0),
-                (byte)Math.Round(g * 255.0),
-                (byte)Math.Round(b * 255.0)
+                Math.Round(r * 255.0),
+                Math.Round(g * 255.0),
+                Math.Round(b * 255.0)
             );
+        }
 
+        public ILab ToLab()
+        {
+            return ToRgb().ToXyz().ToLab();
         }
     }
 }

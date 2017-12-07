@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 using Project3.IMyColorSpaces;
 
 namespace Project3.MyColorSpaces
 {
-    public class MyXyz : IXyz
+    public class MyXyz : IXyz, IMyColor
     {
         public const double Xr = 94.81;
         public const double Yr = 100.0;
@@ -17,7 +12,7 @@ namespace Project3.MyColorSpaces
         public const double DeltaSquare = Delta*Delta;
         public const double DeltaCube = DeltaSquare*Delta;
        
-        public static double Precision = 1e-4;
+        public static double Precision = 1e-3;
         public double X
         {
             get => _x;

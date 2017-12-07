@@ -1,12 +1,10 @@
-﻿using System.Windows;
+﻿using Project3.MyColorSpaces;
 
 namespace Project3.IMyColorSpaces
 {
     public interface IMyColor
     {
         ILab ToLab();
-        //bool IsRepresentable { get; }
-        Visibility IsRepresentable { get; }
     }
     public interface ILab
     {
@@ -23,6 +21,7 @@ namespace Project3.IMyColorSpaces
         double Z { get; set; }
         IRgb ToRgb();
         ILab ToLab();
+        bool Equals(IXyz other);
     }
 
     public interface IYuv
@@ -78,5 +77,7 @@ namespace Project3.IMyColorSpaces
         IYuv ToYuv();
         IYCbCr ToYCbCr();
         bool Equals(IRgb other);
+        void UpdateMyRgb(MyRgb myRgb);
+        bool IsVisible { get; }
     }
 }

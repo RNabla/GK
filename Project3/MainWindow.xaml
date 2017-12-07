@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Project3"
         mc:Ignorable="d"
         Title="MainWindow" Height="293.898" Width="912.372">
     <Grid>
@@ -12,7 +11,7 @@
                 <GroupBox.Header>
                     <WrapPanel>
                         <Label>RGB</Label>
-                        <Label Name ="RgbVisible" Visibility="{Binding IsRepresentable}">Nie prezentowalny</Label>
+                        <Label Name ="RgbVisible">(Przybliżony)</Label>
                     </WrapPanel>
                 </GroupBox.Header>
                 <Grid>
@@ -32,14 +31,17 @@
                     <TextBox Name="RgbValueR" Grid.Row="0" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
                     <TextBox Name="RgbValueG" Grid.Row="1" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
                     <TextBox Name="RgbValueB" Grid.Row="2" Grid.Column="2" MaxLength="3" Width="50" LostKeyboardFocus="TextBoxValueOnLostKeyboardFocus">0</TextBox>
-                    <Slider Name="RgbSliderR" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="RgbSliderG" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="255" ValueChanged="ColorChanged" />
-                    <Slider Name="RgbSliderB" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="RgbSliderR" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="0" Grid.Column="1" Minimum="-10" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="RgbSliderG" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="1" Grid.Column="1" Minimum="-10" Maximum="255" ValueChanged="ColorChanged" />
+                    <Slider Name="RgbSliderB" IsSnapToTickEnabled="True" TickFrequency="1" Grid.Row="2" Grid.Column="1" Minimum="-10" Maximum="255" ValueChanged="ColorChanged" />
                 </Grid>
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
-                    <Label>CMYK</Label>
+                    <WrapPanel>
+                        <Label>Cmyk</Label>
+                        <Label Name ="CmykVisible">(Przybliżony)</Label>
+                    </WrapPanel>
                 </GroupBox.Header>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -69,7 +71,10 @@
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
-                    <Label>HSL</Label>
+                    <WrapPanel>
+                        <Label>HSL</Label>
+                        <Label Name ="HslVisible">(Przybliżony)</Label>
+                    </WrapPanel>
                 </GroupBox.Header>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -95,7 +100,10 @@
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
-                    <Label>HSV</Label>
+                    <WrapPanel>
+                        <Label>HSV</Label>
+                        <Label Name ="HsvVisible">(Przybliżony)</Label>
+                    </WrapPanel>
                 </GroupBox.Header>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -121,7 +129,10 @@
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
-                    <Label>YUV</Label>
+                    <WrapPanel>
+                        <Label>YUV</Label>
+                        <Label Name ="YuvVisible">(Przybliżony)</Label>
+                    </WrapPanel>
                 </GroupBox.Header>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -147,7 +158,10 @@
             </GroupBox>
             <GroupBox>
                 <GroupBox.Header>
-                    <Label>YCbCr</Label>
+                    <WrapPanel>
+                        <Label>YCbCr</Label>
+                        <Label Name ="YCbCrVisible">(Przybliżony)</Label>
+                    </WrapPanel>
                 </GroupBox.Header>
                 <Grid>
                     <Grid.RowDefinitions>

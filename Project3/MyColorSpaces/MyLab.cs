@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using Project3.IMyColorSpaces;
 
 namespace Project3.MyColorSpaces
@@ -81,6 +76,5 @@ namespace Project3.MyColorSpaces
             return this;
         }
 
-        public Visibility IsRepresentable { get; }
     }
 }
